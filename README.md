@@ -50,7 +50,7 @@ Frame indicates the iteration space. Depth indicates how many dimensions to iter
 ### mapPar
 
 **Synopsis**
-<div style="background-color:#ff0000">
+
 __Array__
 ```javascript
 myArray.mapPar(elementalFunction, thisArg = undefined)
@@ -59,7 +59,7 @@ Typed Object
 ```javascript
 myTO.mapPar(depth = 1, elementalFunction, thisArg = undefined)
 ```
-</div>
+
 ##### Arguments
 - depth (optional) the number of dimensions to iterate over (as before), default is 1, the outermost dimension.
 - elementalFunction described below
