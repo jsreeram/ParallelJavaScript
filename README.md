@@ -144,9 +144,9 @@ Unlike the sequential version of from the elemental function takes an index, the
 result = Int32Array.fromPar([1,2,3]);
 result = Int32Array.fromPar([1,2,3], function(val){return val;});
 ```
-
+====
 ### reducePar
-
+----
 __Array__
 
 ```javascript
@@ -187,10 +187,10 @@ reducePar is only required to return a result consistent with some call ordering
 Typically the programmer will only call reducePar with associative functions but there is nothing preventing them doing otherwise. Calling reducePar with a non-associative function will lead to a result that is guaranteed only to be consistent with some ordering of applying the elemental function on some ordering of the arguments.
 
 reducePar always works on the top level dimensions.
+
 ======
-
 ### scanPar
-
+-----
 __Array__
 ```javascript
 myArray.scanPar(elementalFunction)
@@ -234,9 +234,8 @@ The construct implements what is known as an inclusive scan which means that the
 Typically the programmer will only call scanPar with associative and commutative functions but there is nothing preventing them doing otherwise. Calling scanPar with a non-associative and/or non-commutative function will lead to a result that is guaranteed only to be consistent with some ordering of applying the elemental function. One issue that has come up is when the coercion to grainType is done. The elementalFunction might see arguments from the source mixed up with intermediate results from previous invocation of the elementalFunction if the intermediate values are not converted immediately upon return from the elementalFunction. To avoid this the returned values are converted immediately to the grainType of the source element.
 
 =====
-
 ### scatterPar
-
+-----
 __Array__
 ```javascript
 myArray.scatterPar(indices, defaultValue, conflictFunction, length)
@@ -312,7 +311,7 @@ result3 = pa.scatterPar([0,0,1,1,2,2], 42, chooseMax, 3);  // <1,3,4>
 
 =====
 filterPar
-
+-----
 __Array__
 ```javascript
 myArray.filterPar(elementalFunction)
@@ -364,9 +363,8 @@ var result = pa.filterPar(function(element, index) { return index%2?false:true;}
 The values are converted to the grain type of the source. The result uses a data storage format that complies with the grain type of the source.
 
 ======
-
 ### buildPar
-
+------
 buildPar is a method of ArrayType, see typed objects. It is intended to be used to create new Arrays and Typed Objects in parallel.
 
 __Array__
@@ -412,9 +410,8 @@ var T = new ArrayType([20,40], uint32);
 var result = T.buildPar((i, j)=>i+j);
 ```
 =====
-
 ### flatten
-
+-----
 __Array__
 
 Not available.
@@ -423,11 +420,11 @@ __Typed Object__
 ```javascript
 myTO.flatten()
 ```
-Arguments
+##### Arguments
 
 None
 
-Throws
+##### Throws
 
 - RangeError when myArray is one dimensional.
 - Returns
@@ -447,9 +444,8 @@ pa2D = pa3D.flatten(); // <<1,2>,<3,4>,<11,12>,<13,14>,<11,22>,<23,24>>
 pa1D = pa2D.flatten(); // <1,2,3,4,11,12,13,14,11,22,23,24>
 ```
 ======
-
 ### partition
-
+------
 __Array__
 
 Not available
