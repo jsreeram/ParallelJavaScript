@@ -65,18 +65,18 @@ myTO.mapPar(depth = 1, elementalFunction, thisArg = undefined)
 ```
 
 ##### Arguments
-- depth (optional) the number of dimensions to iterate over (as before), default is 1, the outermost dimension.
-- elementalFunction described below
-- thisArg If a thisArg parameter is provided, it will be used as the this value for each invocation of elementalFunction. If it is not provided, undefined is used instead.
+- *depth (optional)*: the number of dimensions to iterate over (as before), default is 1, the outermost dimension.
+- *elementalFunction*: described below
+- *thisArg*: If a *thisArg* parameter is provided, it will be used as the this value for each invocation of *elementalFunction*. If it is not provided, *undefined* is used instead.
 
 ##### Elemental Function
 ```javascript
 function (element, index, source, outCursor) 
 ```
-- element The element from the source.
-- index The index in source where element is located as well as where the result will be placed.
-- source The source holding the elements.
-- outCursor Output cursor where results can be placed. If a non-undefined value is returned outCursor will be overwritten by the returned value. If outCursor is not specified the result of the function will be placed in mapPar’s result at index.
+- *element*: The element from the source.
+- *index*: The index in source where element is located as well as where the result will be placed.
+- *source*: The source holding the elements.
+- *outCursor*: Output cursor where results can be placed. If a non-undefined value is returned outCursor will be overwritten by the returned value. If *outCursor* is not specified the result of the function will be placed in mapPar’s result at *index*.
 
 ##### Returns
 
@@ -84,8 +84,8 @@ A freshly minted Array or Typed Object. Elements are the results of applying the
 
 ##### Throws
 
-- TypeError when elementalFunction is not a function.
-- Error when required by Typed Object conversion semantics.
+- *TypeError* when elementalFunction is not a function.
+- *Error* when required by Typed Object conversion semantics.
 
 ##### Discussion
 
