@@ -50,7 +50,7 @@ Frame indicates the iteration space. Depth indicates how many dimensions to iter
 
 
 ### mapPar
-
+-----
 
 __Array__
 
@@ -95,11 +95,10 @@ Example: an identity function
 ```javascript
 result = pa.mapPar(function(val){return val;});
 ```
-
-====
-
+======
 ### fromPar
 
+-----
 __Array__
 
 ```javascript
