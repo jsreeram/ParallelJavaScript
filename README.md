@@ -37,7 +37,7 @@ Array and Typed Object come with the following four data parallel methods that m
 
 This simple example creates a three element Array myPA. It then uses the prototype method mapPar and the elemental function val ⇒ val + 1 to create a freshly minted Array myPlusPA with each element in myPA incremented by 1.
 ```javascript
-myPA = [1, 2, 3];                                               // [1, 2, 3]
+myPA = [1, 2, 3];                        // [1, 2, 3]
 myPlusPA = myPA.mapPar(val => val + 1);  // [2, 3, 4]
 ```
 ## Terminology
@@ -50,7 +50,7 @@ Frame indicates the iteration space. Depth indicates how many dimensions to iter
 ### mapPar
 
 **Synopsis**
-
+<div style="background-color:#ff0000">
 __Array__
 ```javascript
 myArray.mapPar(elementalFunction, thisArg = undefined)
@@ -59,6 +59,7 @@ Typed Object
 ```javascript
 myTO.mapPar(depth = 1, elementalFunction, thisArg = undefined)
 ```
+</div>
 ##### Arguments
 - depth (optional) the number of dimensions to iterate over (as before), default is 1, the outermost dimension.
 - elementalFunction described below
