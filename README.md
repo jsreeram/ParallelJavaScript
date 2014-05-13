@@ -147,7 +147,7 @@ result = Int32Array.fromPar([1,2,3]);
 result = Int32Array.fromPar([1,2,3], function(val){return val;});
 ```
 ====
-### reducePar
+reducePar
 ----
 __Array__
 
@@ -191,7 +191,7 @@ Typically the programmer will only call reducePar with associative functions but
 reducePar always works on the top level dimensions.
 
 ======
-### scanPar
+scanPar
 -----
 __Array__
 ```javascript
@@ -236,7 +236,7 @@ The construct implements what is known as an inclusive scan which means that the
 Typically the programmer will only call scanPar with associative and commutative functions but there is nothing preventing them doing otherwise. Calling scanPar with a non-associative and/or non-commutative function will lead to a result that is guaranteed only to be consistent with some ordering of applying the elemental function. One issue that has come up is when the coercion to grainType is done. The elementalFunction might see arguments from the source mixed up with intermediate results from previous invocation of the elementalFunction if the intermediate values are not converted immediately upon return from the elementalFunction. To avoid this the returned values are converted immediately to the grainType of the source element.
 
 =====
-### scatterPar
+scatterPar
 -----
 __Array__
 ```javascript
@@ -291,7 +291,7 @@ The value returned is converted to the grainType found in the source. The create
 conflictFunction(valA, valB)
 ```
 
-##### Arguments
+##### Arguments to conflict function
 
 - valA, valB the two values that conflict
 
@@ -365,7 +365,7 @@ var result = pa.filterPar(function(element, index) { return index%2?false:true;}
 The values are converted to the grain type of the source. The result uses a data storage format that complies with the grain type of the source.
 
 ======
-### buildPar
+buildPar
 ------
 buildPar is a method of ArrayType, see typed objects. It is intended to be used to create new Arrays and Typed Objects in parallel.
 
@@ -412,7 +412,7 @@ var T = new ArrayType([20,40], uint32);
 var result = T.buildPar((i, j)=>i+j);
 ```
 =====
-### flatten
+flatten
 -----
 __Array__
 
@@ -447,7 +447,7 @@ pa2D = pa3D.flatten(); // <<1,2>,<3,4>,<11,12>,<13,14>,<11,22>,<23,24>>
 pa1D = pa2D.flatten(); // <1,2,3,4,11,12,13,14,11,22,23,24>
 ```
 ======
-### partition
+partition
 ------
 __Array__
 
