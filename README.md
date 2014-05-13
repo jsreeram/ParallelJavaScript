@@ -51,7 +51,7 @@ myPlusPA = myPA.mapPar(val => val + 1);  // [2, 3, 4]
 ## API
 
 
-### mapPar
+mapPar
 -----
 
 __Array__
@@ -98,7 +98,7 @@ Example: an identity function
 result = pa.mapPar(function(val){return val;});
 ```
 ====
-### fromPar
+fromPar
 ----
 __Array__
 
