@@ -51,7 +51,6 @@ Frame indicates the iteration space. Depth indicates how many dimensions to iter
 
 ### mapPar
 
-**Synopsis**
 
 __Array__
 
@@ -59,7 +58,7 @@ __Array__
 myArray.mapPar(elementalFunction, thisArg = undefined)
 ```
 
-Typed Object
+__Typed Object__
 
 ```javascript
 myTO.mapPar(depth = 1, elementalFunction, thisArg = undefined)
@@ -96,73 +95,92 @@ Example: an identity function
 ```javascript
 result = pa.mapPar(function(val){return val;});
 ```
-fromPar
 
-Synopsis
+====
 
-Array
+### fromPar
 
+__Array__
+
+```javascript
 Array.fromPar(source, elementalFunction=undefined, thisArg=undefined)
-Typed Object
+```
 
+___Typed Object___
+
+```javascript
 TypedObject.fromPar(source, elementalFunction=undefined, thisArg=undefined)
-Arguments
+```
 
-source The source values
-elementalFunction if defined is called as described below, if undefined the source values are simple converted to Array or TypedObject elements.
-thisArg If defined it is used as the this inside the elementalFunction
-Elemental Function
+##### Arguments
 
-function (element, index, source, outCursor) 
-element The element from the source.
-index The index in source where element is located as well as where the result will be placed.
-source The source holding the elements.
-outCursor Output cursor where results can be placed. If a non-undefined value is returned outCursor will be overwritten by the returned value.
-If outCursor is not specified the result of the function will be placed in fromPar’s result at index.
+- source The source values
+- elementalFunction if defined is called as described below, if undefined the source values are simple converted to Array or TypedObject elements.
+- thisArg If defined it is used as the this inside the elementalFunction
 
-Returns
+###### Elemental Function
+
+```javascript
+function (element, index, source, outCursor)
+```
+- element The element from the source.
+- index The index in source where element is located as well as where the result will be placed.
+- source The source holding the elements.
+- outCursor Output cursor where results can be placed. If a non-undefined value is returned outCursor will be overwritten by the returned value. If outCursor is not specified the result of the function will be placed in fromPar’s result at index.
+
+##### Returns
 
 A freshly minted Array or Type Object. Elements are the results of applying the elemental function to the elements in the source and converting them according to the Array or Typed Object. If the elemental function is not provided the source values are converted into the appropriate destination type.
 
-Throws
+##### Throws
 
-TypeError when elementalFunction is not a function or undefined.
-Error when required by Typed Object conversion semantics.
-Discussion
+- TypeError when elementalFunction is not a function or undefined.
+- Error when required by Typed Object conversion semantics.
+
+##### Discussion
 
 Unlike the sequential version of from the elemental function takes an index, the source, and an outcursor.
 
-Example: Convert [1,2,3] to a Int32Array
-
+###### Example: Convert [1,2,3] to a Int32Array
+```javascript
 result = Int32Array.fromPar([1,2,3]);
 result = Int32Array.fromPar([1,2,3], function(val){return val;});
-reducePar
+```
 
-Synopsis
+### reducePar
 
-Array
+__Array__
 
+```javascript
 myArray.reducePar(elementalFunction)
-Typed Object
+```
 
+__Typed Object__
+
+```javascript
 myArray.reducePar(elementalFunction)
-Arguments
+```
 
-elementalFunction described below
+##### Arguments
 
-Elemental Function
+##### Elemental Function
 
+```javascript
 function (a, b)
-a, b Arguments to be reduced and returned
-Returns
+```
+
+- a, b Arguments to be reduced and returned
+
+##### Returns
 
 The final value, if the source Array or Typed Object has only 1 element then that element is returned.
 
-Throws
+##### Throws
 
-TypeError when elementalFunction is not a function.
-RangeError if the source Array or Typed Object is empty.
-Discussion
+- TypeError when elementalFunction is not a function.
+- RangeError if the source Array or Typed Object is empty.
+
+##### Discussion
 
 reducePar is free to group calls to the elemental function and reorder the calls. For an elemental function that is associative the final result will be the same as reducing from left to right. Modular addition of integers is an example of an associative function and in this case the sum of an Array will always be the same regardless of the order that reducePar calls the addition operator. On the other hand, averaging is an example of a non-associative function. The expression Average(Average(2, 3), 9) produces the value 5 2/3 while the expression Average(2, Average(3, 9)) produces the value 4. reducePar is permitted to choose whichever call ordering it finds convenient.
 
@@ -171,82 +189,98 @@ reducePar is only required to return a result consistent with some call ordering
 Typically the programmer will only call reducePar with associative functions but there is nothing preventing them doing otherwise. Calling reducePar with a non-associative function will lead to a result that is guaranteed only to be consistent with some ordering of applying the elemental function on some ordering of the arguments.
 
 reducePar always works on the top level dimensions.
+======
 
-scanPar
+### scanPar
 
-Synopsis
-
-Array
-
+__Array__
+```javascript
 myArray.scanPar(elementalFunction)
-Typed Object
+```
 
+___Typed Object___
+
+```javascript
 myTO.scanPar(elementalFunction)
-Arguments
+```
 
+##### Arguments
 elementalFunction described below
-Elemental Function
 
+##### Elemental Function
+
+```javascript
 function (a, b) 
-a, b - arguments to be reduced and result returned
+```
+- a, b - arguments to be reduced and result returned
 The arguments will have the same grainType as the source elements. The returned result is converted immediately to the grainType of source elements.
 
-Returns
+##### Returns
 
 scanPar returns a freshly minted Array or Typed Object whose i-th element is the result of using the elemental function to reduce the source elements between 0 and i, inclusively. Elements returned from elemental functions are converted to the type of the elements in the spec before being stored in the result.
 
-Throws
+##### Throws
 
-TypeError when elementalFunction is not a function.
-Error when required by Typed Object conversion semantics.
-Example: Prefix Sum
+- TypeError when elementalFunction is not a function.
+- Error when required by Typed Object conversion semantics.
 
+###### Example: Prefix Sum
+```javascript
 pa.scanPar(function(a, b){return a+b;})
-Discussion
+```
+
+##### Discussion
 
 The construct implements what is known as an inclusive scan which means that the value of the i-th result is the same as what would be produced by [0..i].reducePar(elementalFunction). Notice that the first element of the result is the same as the first element in the original Array. An exclusive scan can be implemented by shifting right by one the results of an inclusive scan dropping the rightmost value, and inserting the identity at location 0. Similar to reducePar, scanPar can reorder the calls to the elemental functions. Ignoring overflow and floating point anomalies, this cannot be detected if the elemental function is associative and commutative; in which case using an elemental function such as addition to create a partial sum will produce the same result regardless of the order in which the elemental function is called. However using a non-associative or non-commutative function can produce different results due to the ordering that scanPar calls the elemental function. While scanPar will produce a result consistent with a legal ordering the ordering and the result may differ for each call to scanPar.
 
 Typically the programmer will only call scanPar with associative and commutative functions but there is nothing preventing them doing otherwise. Calling scanPar with a non-associative and/or non-commutative function will lead to a result that is guaranteed only to be consistent with some ordering of applying the elemental function. One issue that has come up is when the coercion to grainType is done. The elementalFunction might see arguments from the source mixed up with intermediate results from previous invocation of the elementalFunction if the intermediate values are not converted immediately upon return from the elementalFunction. To avoid this the returned values are converted immediately to the grainType of the source element.
 
-scatterPar
+=====
 
-Synopsis
+### scatterPar
 
-Array
-
+__Array__
+```javascript
 myArray.scatterPar(indices, defaultValue, conflictFunction, length)
-Typed Object
-
+```
+__Typed Object__
+```javascript
 myTO.scatterPar(indices, defaultValue, conflictFunction, length)
-Arguments
+```
 
-indices array of indices in the resulting array
-defaultValue optional argument indicating the value of elements not set by scatter. When not present, the default value is undefined
-conflictFunction optional function to resolve conflicts, details below.
-length optional argument indicating the length of the resulting array. If absent, the length is the same as the length of the source.
-Returns
+##### Arguments
 
-A freshly minted Array A where each element A[i] is defined as
+- indices array of indices in the resulting array
+- defaultValue optional argument indicating the value of elements not set by scatter. When not present, the default value is undefined
+- conflictFunction optional function to resolve conflicts, details below.
+- length optional argument indicating the length of the resulting array. If absent, the length is the same as the length of the source.
 
-A[indices[i]] = myArray[i], when indices[i] appears only once in indices
-A[indices[i]] = grainType(conflictFunction(valA, valB ) when multiple elements are scattered to the same location. The return value is immediately converted to grainType.
-Throws
+##### Returns
 
-RangeError when the length of indices does not match the length argument or, if length is not given, the length of the source Array or Typed Object.
-TypeError when conflictFunction is neither undefined nor a function.
-RangeError when a conflict occurs but no conflict function has been supplied by the programmer.
-TypeError when indices contains a value that cannot be interpreted as a number, e.g., +-Infinity and NaN.
-RangeError when indices contains an index smaller 0 or greater than the result array’s length.
-Error when required by Typed Object conversion semantics. Note that omitting a default value while using a type specification may lead to coercion errors if the default cannot be coerced to the specified type.
-Example: an identity function
+A freshly minted Array A where each element A[i] is defined as one of:
 
+- A[indices[i]] = myArray[i], when indices[i] appears only once in indices
+- A[indices[i]] = grainType(conflictFunction(valA, valB ) when multiple elements are scattered to the same location. The return value is immediately converted to grainType.
+
+##### Throws
+
+- RangeError when the length of indices does not match the length argument or, if length is not given, the length of the source Array or Typed Object.
+- TypeError when conflictFunction is neither undefined nor a function.
+- RangeError when a conflict occurs but no conflict function has been supplied by the programmer.
+- TypeError when indices contains a value that cannot be interpreted as a number, e.g., +-Infinity and NaN.
+- RangeError when indices contains an index smaller 0 or greater than the result array’s length.
+- Error when required by Typed Object conversion semantics. Note that omitting a default value while using a type specification may lead to coercion errors if the default cannot be coerced to the specified type.
+
+###### Example: an identity function
+```javascript
 result = pa.scatterPar(indices); where indices is a Array in which element === index
+```
 
-Handling conflicts with the Conflict Function
+##### Handling conflicts with the Conflict Function
 
 A conflict occurs when multiple elements are scattered to the same location. It results in a call to conflictFunction, which is an optional third argument to “scatterPar”. If conflictFunction is undefined, scatterPar throws an exception when a conflict occurs. Note that the order in which conflicts are resolved is left unspecified. Therefore, to ensure deterministic behavior, the conflict functions needs to be deterministic and associative.
 
-Discussion
+##### Discussion
 
 It is important to note here that for scatterPar, the arguments to the conflict resolution function are the already coerced values. The rationale is two-fold:
 
@@ -254,16 +288,21 @@ Conceptually, the conflict resolution function resolves conflicting stores to th
 Practically, this semantics enables a simpler and more efficient implementation, where results may be written to the final result buffer even though a conflict may still arise.
 The value returned is converted to the grainType found in the source. The created “block” object uses a data storage format that complies with the type description ArrayType(typeSpec, length) where length is the value of the length argument or, if that is omitted, the value of the length property of the source array myArray.
 
+```javascript
 conflictFunction(valA, valB)
-Arguments
+```
 
-valA, valB the two values that conflict
-Returns
+##### Arguments
+
+- valA, valB the two values that conflict
+
+##### Returns
 
 Value to place in result[indices[index]] . This value will be converted according to grain type found in the source.
 
-Example: Resolve conflict with the larger value
 
+###### Example: Resolve conflict with the larger value
+```javascript
 function chooseMax(valA, valB){
       return (valA>valB)?valA:valB;
  }
@@ -271,150 +310,175 @@ pa = [0,1,2,3,4,5];
 result  = pa.scatterPar([0,3,1,4,2,5]);  		   // <0,2,4,1,3,5>
 result2 = pa.scatterPar([0,0,1,1,2,2], 42, chooseMax);     // <1,3,5,42,42,42>
 result3 = pa.scatterPar([0,0,1,1,2,2], 42, chooseMax, 3);  // <1,3,4>
+```
+
+=====
 filterPar
 
-Synopsis
-
-Array
-
+__Array__
+```javascript
 myArray.filterPar(elementalFunction)
-Typed Object
+```
 
+__Typed Object__
+
+```javascript
 myTO.filterPar(elementalFunction)
-Arguments
+```
 
+##### Arguments
 elementalFunction described below.
-Elemental Function
 
+##### Elemental Function
+```javascript
 function (element, index, source) 
-element The element from the source Array or Typed Object.
-index The index in source where element is located.
-source The source Array or Typed Object holding the elements.
-If the result of the function is truthy then the corresponding element will be placed in filterPar‘s result. Elements in the result will be in the same order as in the source.
+```
+- element The element from the source Array or Typed Object.
+- index The index in source where element is located.
+- source The source Array or Typed Object holding the elements.
+- If the result of the function is truthy then the corresponding element will be placed in filterPar‘s result. Elements in the result will be in the same order as in the source.
 
-Returns
+##### Returns
 
 A freshly minted Array holding the source elements located at myArray[i] for which elementalFunction returns a truthy value. The order of the elements in the result is the same as the order of the elements in the source.
 
-Throws
+##### Throws
 
-TypeError when elementalFunction is not a function.
-Error If required by the Typed Object conversion semantics.
-Examples
+- TypeError when elementalFunction is not a function.
+- Error If required by the Typed Object conversion semantics.
 
-identity function
+##### Examples
 
+###### Identity function
+```javascript
 var pa = [1,2,3,4,5,6,7]; 
 var result = pa.filterPar(function(ignore){return true;});
-filter out every other element
+```
 
+###### Filter out every other element
+```javascript
 var pa = [1,2,3,4,5,6,7]; 
 var result = pa.filterPar(function(element, index) { return index%2?false:true;} );
-Discussion
+```
+
+##### Discussion
 
 The values are converted to the grain type of the source. The result uses a data storage format that complies with the grain type of the source.
 
-buildPar
+======
 
-Synopsis
+### buildPar
 
 buildPar is a method of ArrayType, see typed objects. It is intended to be used to create new Arrays and Typed Objects in parallel.
 
-Array
-
+__Array__
+```javascript
 ArrayType.buildPar(iterationSpace, elementalFunction)
-Typed Object
+```
 
- ArrayType.buildPar(iterationSpace, elementalFunction) 
-Arguments
+__Typed Object__
+```javascript
+ArrayType.buildPar(iterationSpace, elementalFunction)
+```
 
-iterationSpace the shape, if a scalar the length of a 1 dimensional array, otherwise an array of scalars specifying the shape of the result.
-elementalFunction described below
-Elemental Function
+##### Arguments
 
+- iterationSpace the shape, if a scalar the length of a 1 dimensional array, otherwise an array of scalars specifying the shape of the result.
+- elementalFunction described below
+
+##### Elemental Function
+```javascript
 function (index, outCursor)  
 function (index, [outCursor1, outCursor2, …, outCursorN]) 
-index The index in source where element is located as well as where the result will be placed.
-outCursor (optional) outCursor specifies a cursor where results can be placed. If a non-undefined value is returned outCursor will be overwritten by the returned value.
-[outCursor1, outCursor2, … outCursorN] (optional) An array of output cursors where results can be placed. If a non-undefined value is returned outCursor1 will be overwritten by the returned value. If a non-undefined value is returned outCursor1 will be set to the returned value.
-Returns
+```
+- index The index in source where element is located as well as where the result will be placed.
+- outCursor (optional) outCursor specifies a cursor where results can be placed. If a non-undefined value is returned outCursor will be overwritten by the returned value.
+- [outCursor1, outCursor2, … outCursorN] (optional) An array of output cursors where results can be placed. If a non-undefined value is returned outCursor1 will be overwritten by the returned value. If a non-undefined value is returned outCursor1 will be set to the returned value.
+
+##### Returns
 
 If zero or one outCursor is specified: A freshly minted Array or Typed Object.
 
 Otherwise: an array holding the arrays associated with the outCursors.
 
-Throws
+##### Throws
 
-TypeError when elementalFunction is not a function.
-Error when required by Typed Object conversion semantics.
-Discussion
+- TypeError when elementalFunction is not a function.
+- Error when required by Typed Object conversion semantics.
+
+##### Discussion
 
 Typed Objects work by moving the shape and grain type specification into the type. For example
-
+```javascript
 var T = new ArrayType([20,40], uint32); 
-
 var result = T.buildPar((i, j)=>i+j);
-flatten
+```
+=====
 
-Synopsis
+### flatten
 
-Array
+__Array__
 
 Not available.
 
-Typed Object
-
+__Typed Object__
+```javascript
 myTO.flatten()
+```
 Arguments
 
-none
+None
 
-throws
+Throws
 
-RangeError when myArray is one dimensional.
-Returns
+- RangeError when myArray is one dimensional.
+- Returns
 
 Typed Object whose outermost two dimensions have been collapsed into one and where the outermost two ArrayType constructors of the descriptor for the underlying storage format have been combined.
 
-Example
-
+###### Example
+```javascript
 T = new ArrayType(new ArrayType(uint8, 2), 2);
 pa = new T ([[1,2], [3,4]])                  // <<1,2>,<3,4>>
 flatPA = pa.flatten()                           // <1,2,3,4>
 flatPA.elementType === ArrayType(uint8,4)
 T3D = new ArrayType(T, 3);
 pa3D = new T3D ( [[[1,2][3,4]], [[11,12][13,14]], [[11,22][23,24]]] );
-		             // <<<1,2>,<3,4>>, <<11,12>,<13,14>>, <<11,22>,<23,24>>>
+// <<<1,2>,<3,4>>, <<11,12>,<13,14>>, <<11,22>,<23,24>>>
 pa2D = pa3D.flatten(); // <<1,2>,<3,4>,<11,12>,<13,14>,<11,22>,<23,24>>
 pa1D = pa2D.flatten(); // <1,2,3,4,11,12,13,14,11,22,23,24>
-partition
+```
+======
 
-Synopsis
+### partition
 
-Array
+__Array__
 
 Not available
 
-Typed Object
-
+__Typed Object__
+```javascript
 myTO.partition(size)
-Arguments
+```
 
-size the size of each element of the newly created dimension; the outermost dimension of myArray needs to be divisible by size.
+##### Arguments
 
-Returns
+- size the size of each element of the newly created dimension; the outermost dimension of myArray needs to be divisible by size.
+
+##### Returns
 
 A freshly minted block where the outermost dimension has been partitioned into elements of size size.
 
-Example
-
+##### Example
+```javascript
 T = new ArrayType(uint8, 4);
 pa = new T([1,2,3,4])  // <1,2,3,4>
 pa2D = pa.partition(2)                    // <<1,2>,<3,4>>
-Discussion
+```
+##### Discussion
 
 While one could implement both flatten and partition using the other constructs we call them out here to make it easy for the compiler to recognize flatten or partition and make optimizations easier.
 
-Throws
+##### Throws
 
 RangeError, when outermost dimension is not divisible by size.
