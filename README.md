@@ -89,7 +89,7 @@ A freshly minted Array or Typed Object. Elements are the results of applying the
 
 ##### Discussion
 
-One functionally correct implementation of mapPar using Array would be to use the sequential map.
+One functionally correct implementation of ***mapPar*** using Array would be to use the sequential map.
 
 Example: an identity function
 ```javascript
@@ -104,7 +104,7 @@ __Array__
 Array.fromPar(source, elementalFunction=undefined, thisArg=undefined)
 ```
 
-___Typed Object___
+__Typed Object__
 
 ```javascript
 TypedObject.fromPar(source, elementalFunction=undefined, thisArg=undefined)
@@ -112,19 +112,19 @@ TypedObject.fromPar(source, elementalFunction=undefined, thisArg=undefined)
 
 ##### Arguments
 
-- source The source values
-- elementalFunction if defined is called as described below, if undefined the source values are simple converted to Array or TypedObject elements.
-- thisArg If defined it is used as the this inside the elementalFunction
+- *source*: The source values
+- *elementalFunction*: if defined is called as described below, if undefined the source values are simple converted to Array or TypedObject elements.
+- *thisArg*: If defined it is used as the this inside the elementalFunction
 
 ###### Elemental Function
 
 ```javascript
 function (element, index, source, outCursor)
 ```
-- element The element from the source.
-- index The index in source where element is located as well as where the result will be placed.
-- source The source holding the elements.
-- outCursor Output cursor where results can be placed. If a non-undefined value is returned outCursor will be overwritten by the returned value. If outCursor is not specified the result of the function will be placed in fromPar’s result at index.
+- *element*: The element from the source.
+- *index*: The index in source where element is located as well as where the result will be placed.
+- *source*: The source holding the elements.
+- *outCursor*: Output cursor where results can be placed. If a non-undefined value is returned outCursor will be overwritten by the returned value. If outCursor is not specified the result of the function will be placed in fromPar’s result at index.
 
 ##### Returns
 
@@ -132,8 +132,8 @@ A freshly minted Array or Type Object. Elements are the results of applying the 
 
 ##### Throws
 
-- TypeError when elementalFunction is not a function or undefined.
-- Error when required by Typed Object conversion semantics.
+- *TypeError* when elementalFunction is not a function or undefined.
+- *Error* when required by Typed Object conversion semantics.
 
 ##### Discussion
 
@@ -167,7 +167,7 @@ myArray.reducePar(elementalFunction)
 function (a, b)
 ```
 
-- a, b Arguments to be reduced and returned
+- a, b are arguments to be reduced and returned
 
 ##### Returns
 
@@ -175,8 +175,8 @@ The final value, if the source Array or Typed Object has only 1 element then tha
 
 ##### Throws
 
-- TypeError when elementalFunction is not a function.
-- RangeError if the source Array or Typed Object is empty.
+- *TypeError*: when elementalFunction is not a function.
+- *RangeError*: if the source Array or Typed Object is empty.
 
 ##### Discussion
 
@@ -203,7 +203,7 @@ myTO.scanPar(elementalFunction)
 ```
 
 ##### Arguments
-elementalFunction described below
+*elementalFunction* described below
 
 ##### Elemental Function
 
@@ -247,10 +247,10 @@ myTO.scatterPar(indices, defaultValue, conflictFunction, length)
 
 ##### Arguments
 
-- indices array of indices in the resulting array
-- defaultValue optional argument indicating the value of elements not set by scatter. When not present, the default value is undefined
-- conflictFunction optional function to resolve conflicts, details below.
-- length optional argument indicating the length of the resulting array. If absent, the length is the same as the length of the source.
+- *indices*: array of indices in the resulting array
+- *defaultValue* (optional): argument indicating the value of elements not set by scatter. When not present, the default value is undefined
+- *conflictFunction* (optional): function to resolve conflicts, details below.
+- *length* (optional): argument indicating the length of the resulting array. If absent, the length is the same as the length of the source.
 
 ##### Returns
 
@@ -261,12 +261,12 @@ A freshly minted Array A where each element A[i] is defined as one of:
 
 ##### Throws
 
-- RangeError when the length of indices does not match the length argument or, if length is not given, the length of the source Array or Typed Object.
-- TypeError when conflictFunction is neither undefined nor a function.
-- RangeError when a conflict occurs but no conflict function has been supplied by the programmer.
-- TypeError when indices contains a value that cannot be interpreted as a number, e.g., +-Infinity and NaN.
-- RangeError when indices contains an index smaller 0 or greater than the result array’s length.
-- Error when required by Typed Object conversion semantics. Note that omitting a default value while using a type specification may lead to coercion errors if the default cannot be coerced to the specified type.
+- *RangeError* when the length of indices does not match the length argument or, if length is not given, the length of the source Array or Typed Object.
+- *TypeError* when conflictFunction is neither undefined nor a function.
+- *RangeError* when a conflict occurs but no conflict function has been supplied by the programmer.
+- *TypeError* when indices contains a value that cannot be interpreted as a number, e.g., +-Infinity and NaN.
+- *RangeError* when indices contains an index smaller 0 or greater than the result array’s length.
+- *Error* when required by Typed Object conversion semantics. Note that omitting a default value while using a type specification may lead to coercion errors if the default cannot be coerced to the specified type.
 
 ###### Example: an identity function
 ```javascript
@@ -330,9 +330,9 @@ elementalFunction described below.
 ```javascript
 function (element, index, source) 
 ```
-- element The element from the source Array or Typed Object.
-- index The index in source where element is located.
-- source The source Array or Typed Object holding the elements.
+- *element*: The element from the source Array or Typed Object.
+- *index*: The index in source where element is located.
+- *source*: The source Array or Typed Object holding the elements.
 - If the result of the function is truthy then the corresponding element will be placed in filterPar‘s result. Elements in the result will be in the same order as in the source.
 
 ##### Returns
@@ -341,8 +341,8 @@ A freshly minted Array holding the source elements located at myArray[i] for whi
 
 ##### Throws
 
-- TypeError when elementalFunction is not a function.
-- Error If required by the Typed Object conversion semantics.
+- *TypeError*: when elementalFunction is not a function.
+- *Error*: If required by the Typed Object conversion semantics.
 
 ##### Examples
 
@@ -379,17 +379,17 @@ ArrayType.buildPar(iterationSpace, elementalFunction)
 
 ##### Arguments
 
-- iterationSpace the shape, if a scalar the length of a 1 dimensional array, otherwise an array of scalars specifying the shape of the result.
-- elementalFunction described below
+- *iterationSpace*: the shape, if a scalar the length of a 1 dimensional array, otherwise an array of scalars specifying the shape of the result.
+- *elementalFunction*: described below
 
 ##### Elemental Function
 ```javascript
 function (index, outCursor)  
 function (index, [outCursor1, outCursor2, …, outCursorN]) 
 ```
-- index The index in source where element is located as well as where the result will be placed.
-- outCursor (optional) outCursor specifies a cursor where results can be placed. If a non-undefined value is returned outCursor will be overwritten by the returned value.
-- [outCursor1, outCursor2, … outCursorN] (optional) An array of output cursors where results can be placed. If a non-undefined value is returned outCursor1 will be overwritten by the returned value. If a non-undefined value is returned outCursor1 will be set to the returned value.
+- *index*: The index in source where element is located as well as where the result will be placed.
+- *outCursor* (optional): outCursor specifies a cursor where results can be placed. If a non-undefined value is returned outCursor will be overwritten by the returned value.
+- *[outCursor1, outCursor2, … outCursorN]* (optional): An array of output cursors where results can be placed. If a non-undefined value is returned outCursor1 will be overwritten by the returned value. If a non-undefined value is returned outCursor1 will be set to the returned value.
 
 ##### Returns
 
@@ -399,8 +399,8 @@ Otherwise: an array holding the arrays associated with the outCursors.
 
 ##### Throws
 
-- TypeError when elementalFunction is not a function.
-- Error when required by Typed Object conversion semantics.
+- *TypeError* when elementalFunction is not a function.
+- *Error* when required by Typed Object conversion semantics.
 
 ##### Discussion
 
@@ -426,8 +426,9 @@ None
 
 ##### Throws
 
-- RangeError when myArray is one dimensional.
-- Returns
+*RangeError* when myArray is one dimensional.
+
+##### Returns
 
 Typed Object whose outermost two dimensions have been collapsed into one and where the outermost two ArrayType constructors of the descriptor for the underlying storage format have been combined.
 
@@ -457,7 +458,7 @@ myTO.partition(size)
 
 ##### Arguments
 
-- size the size of each element of the newly created dimension; the outermost dimension of myArray needs to be divisible by size.
+- *size*: the size of each element of the newly created dimension; the outermost dimension of myArray needs to be divisible by size.
 
 ##### Returns
 
@@ -475,4 +476,4 @@ While one could implement both flatten and partition using the other constructs 
 
 ##### Throws
 
-RangeError, when outermost dimension is not divisible by size.
+*RangeError* when outermost dimension is not divisible by size.
