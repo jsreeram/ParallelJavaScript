@@ -1,9 +1,9 @@
 # ParallelJavaScript
-======
+
 
 
 ## Goals
-----
+
 The goal of this proposal is to enable data-parallelism in web applications. Browser applications and in particular EcmaScript often need to leverage all available computing resources to provide the best possible user experience. Today web applications do not take full advantage of ever increasing parallel client hardware due to the lack of appropriate programming models. This proposal puts the parallel computing power of client’s hardware into the hands of the web developer while staying within the safe and secure boundaries of the familiar EcmaScript programming paradigm. It gently extends EcmaScript with simple deterministic data-parallel constructs that enable runtime translation to a low-level hardware abstraction layer. By leveraging multiple CPU cores and vector instructions, Parallel EcmaScript achieves significant speedup over sequential EcmaScript.
 
 ### Design
@@ -41,11 +41,12 @@ myPA = [1, 2, 3];                                               // [1, 2, 3]
 myPlusPA = myPA.mapPar(val => val + 1);  // [2, 3, 4]
 ```
 ## Terminology
-------
+
 Frame indicates the iteration space. Depth indicates how many dimensions to iterate over. As such it is how many dimensions are to be used in the frame. Grain indicates the value at each iterations, it is what is returned by an elemental function. An element is the grain found when the depth and the number of dimensions are the same. For example if one has a 4 dimensional structure and maps at the depth of 4 then the grain is the same as the element and the frame has 4 dimensions. If I map at the depth of 3 then the grain is a 1 dimensional vector of elements and the frame has 3 dimensions. Since Arrays are always one dimensional one can only iterate at the depth of 1, the frame has 1 dimension and the grain is the same as the elements. The terms grainType and elementType indicate corresponding types of a grain or an element.
 
 ## API
-======
+
+
 ### mapPar
 
 **Synopsis**
