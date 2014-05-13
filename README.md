@@ -95,9 +95,9 @@ Example: an identity function
 ```javascript
 result = pa.mapPar(function(val){return val;});
 ```
------
-### fromPar
 ====
+### fromPar
+----
 __Array__
 
 ```javascript
