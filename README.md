@@ -118,7 +118,7 @@ TypedObject.fromPar(source, elementalFunction=undefined, thisArg=undefined)
 - *elementalFunction*: if defined is called as described below, if undefined the source values are simple converted to Array or TypedObject elements.
 - *thisArg*: If defined it is used as the this inside the elementalFunction
 
-###### Elemental Function
+##### Elemental Function
 
 ```javascript
 function (element, index, source, outCursor)
