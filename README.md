@@ -44,7 +44,9 @@ myPlusPA = myPA.mapPar(val => val + 1);  // [2, 3, 4]
 
 ## Terminology
 
-Frame indicates the iteration space. Depth indicates how many dimensions to iterate over. As such it is how many dimensions are to be used in the frame. Grain indicates the value at each iterations, it is what is returned by an elemental function. An element is the grain found when the depth and the number of dimensions are the same. For example if one has a 4 dimensional structure and maps at the depth of 4 then the grain is the same as the element and the frame has 4 dimensions. If I map at the depth of 3 then the grain is a 1 dimensional vector of elements and the frame has 3 dimensions. Since Arrays are always one dimensional one can only iterate at the depth of 1, the frame has 1 dimension and the grain is the same as the elements. The terms grainType and elementType indicate corresponding types of a grain or an element.
+- *Frame* indicates the iteration space.
+- *Depth* indicaates how many dimensions to iterate over. As such it is how many dimensions are to be used in the frame.
+- *Grain* refers to the value at each element in the frame - it is what is returned by an elemental function. An element is the grain found when the depth and the number of dimensions are the same. For example if one has a 4 dimensional structure and maps at the depth of 4 then the grain is the same as the element and the frame has 4 dimensions. If I map at the depth of 3 then the grain is a 1 dimensional vector of elements and the frame has 3 dimensions. Since Arrays are always one dimensional one can only iterate at the depth of 1, the frame has 1 dimension and the grain is the same as the elements. The terms grainType and elementType indicate corresponding types of a grain or an element.
 
 ## API
 
